@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:roflit_s3/src/config/s3_data.dart';
-import 'package:roflit_s3/src/config/s3_util.dart';
-import 'package:roflit_s3/src/constants.dart';
-import 'package:roflit_s3/src/entity/access.dart';
-import 'package:roflit_s3/src/entity/request.dart';
-import 'package:roflit_s3/src/entity/request_type.dart';
-import 'package:roflit_s3/src/util/utility.dart';
+import '../constants.dart';
+import '../entity/access.dart';
+import '../entity/request.dart';
+import '../entity/request_type.dart';
+import '../util/utility.dart';
+import 's3_data.dart';
+import 's3_util.dart';
 
 abstract final class S3Config {
   static RoflitRequest signing({

@@ -54,5 +54,3 @@ final class BucketListObjectParameters {
   String get queryString =>
       'list-type=2$_continuationUrl$_maxKeysUrl$_delimiterUrl$_prefixUrl$_startAfterUrl';
 }
-
-// final class BucketHeadersCreateParameters {}

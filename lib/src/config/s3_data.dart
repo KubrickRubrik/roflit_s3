@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:roflit_s3/s3roflit.dart';
-import 'package:roflit_s3/src/config/s3_util.dart';
-import 'package:roflit_s3/src/constants.dart';
-import 'package:roflit_s3/src/entity/access.dart';
+import '../constants.dart';
+import '../entity/access.dart';
+import '../entity/request_type.dart';
+import 's3_util.dart';
 
 abstract final class S3Data {
   static Map<String, String> getSignatureHheaders({
@@ -87,7 +87,7 @@ abstract final class S3Data {
     final signedHeaderKeys = keyList.join(';');
 
     return '$algorithm '
-        'Credential=${access.accessKey}/$credentialScope, '
+        'Credential=${access.keyIdentifier}/$credentialScope, '
         'SignedHeaders=$signedHeaderKeys, '
         'Signature=$signature';
   }

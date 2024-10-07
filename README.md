@@ -1,39 +1,76 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Roflit S3
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+An easy-to-use REST AWS S3 package for working with Yandex Cloud storage services.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## Installing
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+```yaml
+dependencies:
+  roflit_s3: <latest_version>
+```
 
-## Features
+## Import
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```dart
+import 'package:roflit_s3/roflit_s3.dart';
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+To use Roflit S3, you need to complete three steps:
+
+1.  Create a RoflitS3 instance by passing the parameters of the cloud storage account to it.
+2.  Form the request data for the operation on buckets or objects.
+3.  Pass the request data to your request client.
+
+## Let's look at an example:
+
+Step 1
 
 ```dart
-const like = 'sample';
+// How to get storageAccount parameters can be found in the documentation
+// of the cloud service you are using and the service management console.
+final storage = RoflitS3(
+          keyIdentifier: cloudStorageServiceAccount.keyIdentifier,
+          secretKey: cloudStorageServiceAccount.secretKey,
+          host: cloudStorage.host,
+          region: cloudStorage.region,
+       );
+// If this is your first time using the cloud service, you will most likely also need:
+// 1. Create a service account;
+// 2. Assign roles to it;
+// 3. Create a secret static key for it and save its details (keyIdentifier and secretKey).
 ```
 
-## Additional information
+Step 2
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+   // Generate request data for all buckets from cloud.
+   final requestBucketsData = storage.buckets.get();
+   // Removing a bucket from cloud.
+   final bucketDeleteRequestData = storage.buckets.delete(bucketName: 'bucketName');
+```
+
+Step 3
+
+```dart
+   Response<dynamic>? response;
+   switch(requestData.typeRequest){
+        case RequestType.get:
+                final response = await _dio.get<dynamic>(
+                requestData.url.toString(),
+                options: Options(headers: requestData.headers),
+                ).timeout(const Duration(seconds: 10));
+        case RequestType.delete:
+                final response = await _dio.delete<dynamic>(
+                requestData.url.toString(),
+                options: Options(headers: requestData.headers),
+                );
+        ...
+   }
+```
+
+## Contributions
+
+If you encounter any problem or the library is missing a feature feel free to open an issue. Feel
+free to fork, improve the package and make pull request.

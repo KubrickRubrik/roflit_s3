@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:roflit_s3/src/constants.dart';
+
+import '../constants.dart';
 
 abstract final class S3Utility {
   static String hashSha256(List<int> value) {

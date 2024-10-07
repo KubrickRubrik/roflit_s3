@@ -1,8 +1,8 @@
-import 'package:roflit_s3/src/config/s3_config.dart';
-import 'package:roflit_s3/src/entity/access.dart';
-import 'package:roflit_s3/src/entity/request.dart';
-import 'package:roflit_s3/src/entity/request_type.dart';
-import 'package:roflit_s3/src/requests/parameters/bucket_parameters.dart';
+import '../config/s3_config.dart';
+import '../entity/access.dart';
+import '../entity/request.dart';
+import '../entity/request_type.dart';
+import 'parameters/bucket_parameters.dart';
 
 final class BucketRequests {
   final RoflitAccess _access;

@@ -14,6 +14,7 @@ dependencies:
   roflit_s3:
     path: ../
   dio: ^5.4.1
+  xml2json: ^6.2.3
 
 dev_dependencies:
   flutter_test:

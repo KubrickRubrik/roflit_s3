@@ -70,6 +70,8 @@ Step 3
    }
 ```
 
+To read bucket and object data, you will need to parse XML or convert XML to Json. More details in the example.
+
 ## Contributions
 
 If you encounter any problem or the library is missing a feature feel free to open an issue. Feel

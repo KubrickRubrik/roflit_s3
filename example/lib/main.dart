@@ -1,24 +1,30 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
-
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:roflit_s3/roflit_s3.dart';
+import 'package:roflit_s3_example/entity/object.dart';
 import 'package:roflit_s3_example/entity/result.dart';
+import 'package:xml2json/xml2json.dart';
+
+import 'entity/bucket.dart';
+import 'util/extension_converter.dart';
 
 void main() async {
-  final operations = Operations();
   const bucketName = 'my-bucket';
   const objectName = 'my-object.jpg';
+  const host = 'storage.yandexcloud.net';
+
+  final serializer = Serializer(host: host);
+  final operations = Operations();
+
   // keyIdentifier and secretKey are properties of the key that is
   // created for the service account in the cloud storage console.
   final storage = RoflitS3(
     keyIdentifier: '************',
     secretKey: '****************',
-    host: 'storage.yandexcloud.net',
+    host: host,
     region: 'ru-central1',
   );
 
@@ -37,7 +43,8 @@ void main() async {
     log('Error: ${getBucketsResponse.message}');
     return;
   }
-  log('Buckets ${getBucketsResponse.success}');
+  final buckets = serializer.buckets(getBucketsResponse.success);
+  log('Buckets $buckets');
 
   // Uploading a file (object) to a bucket.
   final uploadObjectResponse = await operations.uploadObject(
@@ -58,7 +65,8 @@ void main() async {
     log('Error: ${getObjectsResponse.message}');
     return;
   }
-  log('Objects ${getObjectsResponse.success}');
+  final objects = serializer.objects(getObjectsResponse.success);
+  log('Objects $objects');
 
   // Delete object
   final deleteObjectsResponse = await operations.deleteObject(
@@ -203,6 +211,63 @@ final class DioClient {
         statusCode: 400,
         message: 'Runtime error $e $s',
       );
+    }
+  }
+}
+
+final class Serializer {
+  final String host;
+
+  Serializer({required this.host});
+
+  final _parser = Xml2Json();
+
+  List<BucketEntity> buckets(Object? value) {
+    try {
+      _parser.parse(value as String);
+      final json = jsonDecode(_parser.toParker());
+      final document = json['ListAllMyBucketsResult'];
+      final buckets = document['Buckets']['Bucket'] as List?;
+
+      final newBuckets = List.generate(buckets?.length ?? 0, (index) {
+        final bucket = buckets![index];
+        return BucketEntity(
+          bucket: bucket['Name'],
+          creationDate: bucket['CreationDate'],
+        );
+      });
+
+      return newBuckets;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  List<ObjectEntity> objects(Object? value) {
+    try {
+      _parser.parse(value as String);
+      final json = jsonDecode(_parser.toParker());
+      final document = json['ListBucketResult'];
+
+      final bucket = document['Name'];
+      final objects = document['Contents'] as List?;
+
+      final newObjects = List.generate(objects?.length ?? 0, (index) {
+        final object = objects![index];
+        return ObjectEntity(
+          objectKey: object['Key'],
+          bucket: bucket,
+          type: FormatConverter.converter(object['Key']),
+          nesting: FormatConverter.nesting(object['Key']),
+          remotePath: '$host/$bucket/${object['Key']}',
+          size: int.tryParse(object['Size']) ?? 0,
+          lastModified: object['LastModified'],
+        );
+      });
+
+      return newObjects;
+    } catch (e) {
+      return [];
     }
   }
 }

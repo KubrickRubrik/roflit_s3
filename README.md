@@ -15,7 +15,7 @@ dependencies:
 import 'package:roflit_s3/roflit_s3.dart';
 ```
 
-## Usage
+## Getting Started
 
 To use Roflit S3, you need to complete three steps:
 

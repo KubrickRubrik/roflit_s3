@@ -1,6 +1,6 @@
 # Roflit S3
 
-An easy-to-use REST AWS S3 package for working with Yandex Cloud storage services.
+Flutter package for easy work with REST AWS S3.
 
 ## Installing
 

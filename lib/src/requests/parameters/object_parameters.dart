@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
@@ -70,7 +68,7 @@ final class ObjectGetParameters {
 final class ObjectUploadHadersParameters {
   const ObjectUploadHadersParameters({
     required this.bodyBytes,
-    this.xAmzStorageClass = ClassOfStorage.STANDARD,
+    this.xAmzStorageClass = ClassOfStorage.standard,
   });
 
   /// Cooler classes are intended for long-term storage of objects that are planned
@@ -85,7 +83,7 @@ final class ObjectUploadHadersParameters {
   final List<int> bodyBytes;
 
   Map<String, String> get _xAmzStorageClass {
-    return {'X-Amz-Storage-Class': xAmzStorageClass.name};
+    return {'X-Amz-Storage-Class': xAmzStorageClass.name.toUpperCase()};
   }
 
   Map<String, String> get _contentMD5 {
@@ -97,9 +95,9 @@ final class ObjectUploadHadersParameters {
 }
 
 enum ClassOfStorage {
-  STANDARD,
-  COLD,
-  ICE,
+  standard,
+  cold,
+  ice,
 }
 
 final class DeleteObjectHeadersParameters {

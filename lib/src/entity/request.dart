@@ -1,5 +1,3 @@
-import 'package:roflit_s3/src/entity/request_type.dart';
-
 final class RoflitRequest {
   final Uri _url;
   final Map<String, String> _headers;
@@ -23,4 +21,20 @@ final class RoflitRequest {
   RequestType get typeRequest => _typeRequest;
 
   Object? get body => _body;
+}
+
+enum RequestType {
+  get,
+  put,
+  delete,
+  post;
+
+  bool get isGet => this == get;
+  bool get isPut => this == put;
+  bool get isDelete => this == delete;
+  bool get isPost => this == post;
+
+  String get value => toString().split('.').last.toUpperCase();
+
+  const RequestType();
 }

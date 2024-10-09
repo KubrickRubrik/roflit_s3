@@ -13,7 +13,7 @@ import 'util/extension_converter.dart';
 
 void main() async {
   const bucketName = 'my-bucket';
-  const objectName = 'my-object.jpg';
+  const objectName = 'my-object';
   const host = 'storage.yandexcloud.net';
 
   final serializer = Serializer(host: host);
@@ -31,7 +31,7 @@ void main() async {
   // Create bucket
   final createBucketResponse = await operations.createBucket(storage, bucketName: bucketName);
 
-  if (!createBucketResponse.sendOk) {
+  if (!createBucketResponse.isSuccess) {
     log('Error: ${createBucketResponse.message}');
     return;
   }
@@ -39,7 +39,7 @@ void main() async {
   // Get bucket
   final getBucketsResponse = await operations.getBuckets(storage);
 
-  if (!getBucketsResponse.sendOk) {
+  if (!getBucketsResponse.isSuccess) {
     log('Error: ${getBucketsResponse.message}');
     return;
   }
@@ -53,7 +53,7 @@ void main() async {
     objectName: objectName,
   );
 
-  if (!uploadObjectResponse.sendOk) {
+  if (!uploadObjectResponse.isSuccess) {
     log('Error: ${uploadObjectResponse.message}');
     return;
   }
@@ -61,7 +61,7 @@ void main() async {
   // Get objects
   final getObjectsResponse = await operations.getObjects(storage, bucketName: bucketName);
 
-  if (!getObjectsResponse.sendOk) {
+  if (!getObjectsResponse.isSuccess) {
     log('Error: ${getObjectsResponse.message}');
     return;
   }
@@ -74,14 +74,14 @@ void main() async {
     bucketName: bucketName,
     objectName: bucketName,
   );
-  if (!deleteObjectsResponse.sendOk) {
+  if (!deleteObjectsResponse.isSuccess) {
     log('Error: ${deleteObjectsResponse.message}');
     return;
   }
 
   // Delete bucket
   final deleteBucketResponse = await operations.deleteBucket(storage, bucketName: bucketName);
-  if (!deleteBucketResponse.sendOk) {
+  if (!deleteBucketResponse.isSuccess) {
     log('Error: ${deleteBucketResponse.message}');
     return;
   }
@@ -109,7 +109,7 @@ final class Operations {
     required String bucketName,
     required String objectName,
   }) async {
-    final file = File('your/local/path/file.ext');
+    final file = File('your/local-path/file.ext');
 
     final dto = storage.objects.upload(
       bucketName: bucketName,

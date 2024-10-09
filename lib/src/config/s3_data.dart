@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../constants.dart';
 import '../entity/access.dart';
-import '../entity/request_type.dart';
+import '../entity/request.dart';
 import 's3_util.dart';
 
 abstract final class S3Data {

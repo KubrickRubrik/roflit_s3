@@ -1,5 +1,5 @@
 class Result {
-  final bool sendOk;
+  final bool isSuccess;
   final int? statusCode;
   final Object? success;
   final String? message;
@@ -8,11 +8,11 @@ class Result {
     required this.success,
     this.statusCode,
     this.message,
-  }) : sendOk = (statusCode ?? 0) >= 200 && (statusCode ?? 0) < 300;
+  }) : isSuccess = (statusCode ?? 0) >= 200 && (statusCode ?? 0) < 300;
 
   Result.failuer({
     required this.message,
     this.statusCode,
     this.success,
-  }) : sendOk = false;
+  }) : isSuccess = false;
 }

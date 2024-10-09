@@ -6,13 +6,15 @@ import 'src/requests/buckets.dart';
 import 'src/requests/objects.dart';
 
 export 'src/entity/request.dart';
-export 'src/entity/request_type.dart';
 export 'src/requests/parameters/bucket_parameters.dart';
 export 'src/requests/parameters/object_parameters.dart';
 
+/// The RoflitS3 instance sets up the configuration of the cloud storage service being
+///  used and provides functionality for using its REST AWS S3 API.
 final class RoflitS3 {
   final RoflitAccess _access;
 
+  /// Configuration for arbitrary cloud storage compatible with REST AWS S3.
   RoflitS3({
     required String keyIdentifier,
     required String secretKey,
@@ -27,6 +29,7 @@ final class RoflitS3 {
           useLog: useLog,
         );
 
+  /// Configuration for Yandex Cloud service compatible with REST AWS S3.
   RoflitS3.yandex({
     required String keyIdentifier,
     required String secretKey,
@@ -40,9 +43,12 @@ final class RoflitS3 {
           useLog: useLog,
         );
 
+  /// The cloud service host used.
   String get host => 'https://${_access.host}';
 
+  /// An instance for working with bucket operations.
   BucketRequests get buckets => BucketRequests(_access);
 
+  /// An instance for working with objects operations.
   ObjectRequests get objects => ObjectRequests(_access);
 }

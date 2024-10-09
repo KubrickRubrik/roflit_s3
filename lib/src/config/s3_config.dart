@@ -3,7 +3,6 @@ import 'dart:developer';
 import '../constants.dart';
 import '../entity/access.dart';
 import '../entity/request.dart';
-import '../entity/request_type.dart';
 import '../util/utility.dart';
 import 's3_data.dart';
 import 's3_util.dart';

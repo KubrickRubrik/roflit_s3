@@ -3,15 +3,16 @@ import 'dart:convert';
 import '../config/s3_config.dart';
 import '../entity/access.dart';
 import '../entity/request.dart';
-import '../entity/request_type.dart';
 import 'parameters/object_parameters.dart';
 
+/// A set of operations for working with cloud service objects.
 final class ObjectRequests {
   final RoflitAccess _access;
 
   ObjectRequests(RoflitAccess access) : _access = access;
 
-  /// Returns an object from Object Storage.
+  /// The method returns the request data needed to retrieve an object named `objectKey`
+  /// in a bucket named `bucketName`.
   RoflitRequest get({
     required String bucketName,
     required String objectKey,
@@ -30,6 +31,8 @@ final class ObjectRequests {
     );
   }
 
+  /// The method returns the request data needed to delete an object named `objectKey` in
+  /// a bucket named `bucketName`.
   RoflitRequest delete({
     required String bucketName,
     required String objectKey,
@@ -47,6 +50,8 @@ final class ObjectRequests {
     );
   }
 
+  /// The method returns the request data needed to upload the file and create an object
+  /// named `objectKey` in a bucket named `bucketName`.
   RoflitRequest upload({
     required String bucketName,
     required String objectKey,
@@ -66,6 +71,17 @@ final class ObjectRequests {
     );
   }
 
+  /// The method returns the request data needed to delete multiple objects in a single request.
+  /// To do this, you need to create an XML document with a list of keys of the objects to be deleted.
+  /// ```dart
+  /// '<?xml version="1.0" encoding="UTF-8"?>
+  ///   <Delete>
+  ///     <Quiet>true</Quiet>
+  ///     <Object><Key>$keyNameObject_1</Key></Object>
+  ///     <Object><Key>$keyNameObject_2</Key></Object>
+  ///     <Object><Key>$keyNameObject_3</Key></Object>
+  ///   </Delete>'
+  /// ```
   RoflitRequest deleteMultiple({
     required String bucketName,
     required String body,

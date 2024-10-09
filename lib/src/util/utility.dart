@@ -1,4 +1,4 @@
-import 'package:roflit_s3/src/util/extension.dart';
+import './extension.dart';
 
 abstract final class Utility {
   static String get dateYYYYmmDD => DateTime.now().toUtc().yyyyMMdd; // YYYYMMDD

@@ -5,11 +5,11 @@ import '../entity/access.dart';
 import '../entity/request.dart';
 import 'parameters/object_parameters.dart';
 
-/// A set of operations for working with cloud service objects.
+/// Set of operations for working with cloud service objects.
 final class ObjectRequests {
   final RoflitAccess _access;
 
-  ObjectRequests(RoflitAccess access) : _access = access;
+  const ObjectRequests(RoflitAccess access) : _access = access;
 
   /// The method returns the request data needed to retrieve an object named `objectKey`
   /// in a bucket named `bucketName`.
@@ -85,7 +85,8 @@ final class ObjectRequests {
   RoflitRequest deleteMultiple({
     required String bucketName,
     required String body,
-    DeleteObjectHeadersParameters headers = const DeleteObjectHeadersParameters(),
+    DeleteObjectHeadersParameters headers =
+        const DeleteObjectHeadersParameters(),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.post;

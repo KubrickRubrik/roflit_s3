@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="roflit_s3 API docs, for the Dart programming language.">
+  <title>roflit_s3 - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/KubrickRubrik/roflit_s3/tree/master">roflit_s3 package</a></li>
+  </ol>
+  <div class="self-name">roflit_s3</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="roflit-s3">Roflit S3</h1>
+<p>Flutter package for easy work with REST AWS S3.</p>
+<h2 id="installing">Installing</h2>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  roflit_s3: &lt;latest_version&gt;
+</code></pre>
+<h2 id="import">Import</h2>
+<pre class="language-dart"><code class="language-dart">import 'package:roflit_s3/roflit_s3.dart';
+</code></pre>
+<h2 id="getting-started">Getting Started</h2>
+<p>To use Roflit S3, you need to complete three steps:</p>
+<ol>
+<li>Create a RoflitS3 instance by passing the parameters of the cloud storage account to it.</li>
+<li>Form the request data for the operation on buckets or objects.</li>
+<li>Pass the request data to your request client.</li>
+</ol>
+<h2 id="lets-look-at-an-example">Let's look at an example:</h2>
+<p>Step 1</p>
+<pre class="language-dart"><code class="language-dart">// How to get storageAccount parameters can be found in the documentation
+// of the cloud service you are using and the service management console.
+final storage = RoflitS3(
+          keyIdentifier: cloudStorageServiceAccount.keyIdentifier,
+          secretKey: cloudStorageServiceAccount.secretKey,
+          host: cloudStorage.host,
+          region: cloudStorage.region,
+       );
+// If this is your first time using the cloud service, you will
+// most likely also need:
+// 1. Create a service account;
+// 2. Assign roles to it;
+// 3. Create a secret static key for it and save its
+//    details (keyIdentifier and secretKey).
+</code></pre>
+<p>Step 2</p>
+<pre class="language-dart"><code class="language-dart">   // Generate request data for all buckets from cloud.
+   final requestBucketsData = storage.buckets.get();
+   // Removing a bucket from cloud.
+     final bucketDeleteRequestData = storage.buckets.delete(
+      bucketName: 'bucketName',
+    );
+</code></pre>
+<p>Step 3</p>
+<pre class="language-dart"><code class="language-dart">   Response&lt;dynamic&gt;? response;
+   switch(requestData.typeRequest){
+        case RequestType.get:
+                final response = await _dio.get&lt;dynamic&gt;(
+                requestData.url.toString(),
+                options: Options(headers: requestData.headers),
+                ).timeout(const Duration(seconds: 10));
+        case RequestType.delete:
+                final response = await _dio.delete&lt;dynamic&gt;(
+                requestData.url.toString(),
+                options: Options(headers: requestData.headers),
+                );
+        ...
+   }
+</code></pre>
+<p>To read bucket and object data, you will need to parse XML or convert XML to Json. More details in the example.</p>
+<h2 id="contributions">Contributions</h2>
+<p>If you encounter any problem or the library is missing a feature feel free to open an issue. Feel
+free to fork, improve the package and make pull request.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="roflitS3">
+  <span class="name"><a href="roflitS3/roflitS3-library.html">roflit_s3</a></span> 
+
+</dt>
+<dd>Fletch RoflitS3 package.
+The class <a href="roflitS3/RoflitS3-class.html">RoflitS3</a> provide access to the REST AWS S3 Api features.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/KubrickRubrik/roflit_s3/tree/master">roflit_s3 package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">roflit_s3</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="roflitS3/roflitS3-library.html">roflit_s3</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    roflit_s3
+      0.0.1
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

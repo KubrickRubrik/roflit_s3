@@ -20,7 +20,9 @@ abstract final class S3Utility {
     required String serviceName,
     required String stringToSign,
   }) {
-    final kDate = Hmac(sha256, utf8.encode('AWS4$secretKey')).convert(utf8.encode(dateStamp)).bytes;
+    final kDate = Hmac(sha256, utf8.encode('AWS4$secretKey'))
+        .convert(utf8.encode(dateStamp))
+        .bytes;
 
     final kRegion = sign(key: kDate, msg: regionName).bytes;
     final kService = sign(key: kRegion, msg: serviceName).bytes;

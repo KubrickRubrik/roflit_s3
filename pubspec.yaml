@@ -1,9 +1,10 @@
 name: roflit_s3
-description: "Flutter package for easy work with REST S3."
+description: "Flutter package for easy work with REST AWS S3. The package allows to configure S3 requests and execute them in any HTTP client."
 version: 0.0.1
+publish_to: pub.dev
 
-repository: https://github.com/KubrickRubrik/roflit_s3/.git
-homepage: https://github.com/KubrickRubrik/roflit_s3/tree/main
+repository: https://github.com/KubrickRubrik/roflit_s3
+homepage: https://github.com/KubrickRubrik/roflit_s3/tree/master
 issue_tracker: https://github.com/KubrickRubrik/roflit_s3/issues
 
 environment:

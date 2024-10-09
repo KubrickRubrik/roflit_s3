@@ -54,10 +54,12 @@ abstract final class S3Config {
       signature: s3Signature,
     );
     if (access.useLog) log('S3 4.HEADER: $s3Headers');
-    final queryString = canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring' : '';
+    final queryString =
+        canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring' : '';
 
     return RoflitRequest(
-      url: Uri.parse('https://$bucket${Constants.host}$canonicalRequest$queryString'),
+      url: Uri.parse(
+          'https://$bucket${Constants.host}$canonicalRequest$queryString'),
       headers: s3Headers,
       typeRequest: requestType,
       body: requestBody,

@@ -1,3 +1,4 @@
+/// Сontains a possible list of available bucket get parameters by default.
 final class BucketListObjectParameters {
   /// Used to get the next part of the list if all the results do not fit into one response.
   /// To get the next part of the list, use the `NextContinuationToken value` from the previous answer.
@@ -40,16 +41,21 @@ final class BucketListObjectParameters {
         prefix = '',
         startAfter = '';
 
-  String get _continuationUrl =>
-      (continuationToken?.isNotEmpty == true) ? '&continuation-token=$continuationToken' : '';
+  String get _continuationUrl => (continuationToken?.isNotEmpty == true)
+      ? '&continuation-token=$continuationToken'
+      : '';
 
-  String get _maxKeysUrl => (maxKeys != null && maxKeys! > 0) ? '&max-keys=$maxKeys' : '';
+  String get _maxKeysUrl =>
+      (maxKeys != null && maxKeys! > 0) ? '&max-keys=$maxKeys' : '';
 
-  String get _delimiterUrl => (delimiter?.isNotEmpty == true) ? '&delimiter=$delimiter' : '';
+  String get _delimiterUrl =>
+      (delimiter?.isNotEmpty == true) ? '&delimiter=$delimiter' : '';
 
-  String get _prefixUrl => (prefix?.isNotEmpty == true) ? '&prefix=$prefix' : '';
+  String get _prefixUrl =>
+      (prefix?.isNotEmpty == true) ? '&prefix=$prefix' : '';
 
-  String get _startAfterUrl => (startAfter?.isNotEmpty == true) ? '&start-after=$startAfter' : '';
+  String get _startAfterUrl =>
+      (startAfter?.isNotEmpty == true) ? '&start-after=$startAfter' : '';
 
   String get queryString =>
       'list-type=2$_continuationUrl$_maxKeysUrl$_delimiterUrl$_prefixUrl$_startAfterUrl';

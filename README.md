@@ -36,10 +36,12 @@ final storage = RoflitS3(
           host: cloudStorage.host,
           region: cloudStorage.region,
        );
-// If this is your first time using the cloud service, you will most likely also need:
+// If this is your first time using the cloud service, you will
+// most likely also need:
 // 1. Create a service account;
 // 2. Assign roles to it;
-// 3. Create a secret static key for it and save its details (keyIdentifier and secretKey).
+// 3. Create a secret static key for it and save its
+//    details (keyIdentifier and secretKey).
 ```
 
 Step 2
@@ -48,7 +50,9 @@ Step 2
    // Generate request data for all buckets from cloud.
    final requestBucketsData = storage.buckets.get();
    // Removing a bucket from cloud.
-   final bucketDeleteRequestData = storage.buckets.delete(bucketName: 'bucketName');
+     final bucketDeleteRequestData = storage.buckets.delete(
+      bucketName: 'bucketName',
+    );
 ```
 
 Step 3

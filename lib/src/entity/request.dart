@@ -1,3 +1,8 @@
+/// RoflitRequest contains the necessary list of properties required for the correct
+/// execution of a request to the cloud service API.
+///
+/// Any http network request client will do to execute the request.
+/// In the http client it is necessary to use the corresponding [RequestType] methods
 final class RoflitRequest {
   final Uri _url;
   final Map<String, String> _headers;
@@ -23,6 +28,8 @@ final class RoflitRequest {
   Object? get body => _body;
 }
 
+/// RequestType contains the necessary set for specifying the corresponding request
+/// method in the http client.
 enum RequestType {
   get,
   put,

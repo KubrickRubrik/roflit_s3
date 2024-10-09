@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
 
+/// Сontains a possible list of available  object get parameters by default.
 final class ObjectGetParameters {
   /// Sets the `Content-Type` response header.
   final bool responseContentType;
@@ -44,14 +45,17 @@ final class ObjectGetParameters {
         responseContentEncoding = false,
         versionId = null;
 
-  String get _responseContentType => (responseContentType) ? '&response-content-type=true' : '';
+  String get _responseContentType =>
+      (responseContentType) ? '&response-content-type=true' : '';
 
   String get _responseContentLanguage =>
       (responseContentLanguage) ? '&response-content-language=true' : '';
 
-  String get _responseExpires => (responseExpires) ? '&response-expires=true' : '';
+  String get _responseExpires =>
+      (responseExpires) ? '&response-expires=true' : '';
 
-  String get _responseCacheControl => (responseCacheControl) ? '&response-cache-control=true' : '';
+  String get _responseCacheControl =>
+      (responseCacheControl) ? '&response-cache-control=true' : '';
 
   String get _responseContentDisposition =>
       (responseContentDisposition) ? '&response-content-disposition=true' : '';
@@ -59,12 +63,14 @@ final class ObjectGetParameters {
   String get _responseContentEncoding =>
       (responseContentEncoding) ? '&response-content-encoding=true' : '';
 
-  String get _versionId => (versionId?.isNotEmpty == true) ? '&versionId=$versionId' : '';
+  String get _versionId =>
+      (versionId?.isNotEmpty == true) ? '&versionId=$versionId' : '';
 
   String get url =>
       '$_responseContentType$_responseContentLanguage$_responseExpires$_responseCacheControl$_responseContentDisposition$_responseContentEncoding$_versionId';
 }
 
+/// Contains a mandatory list of headers required to upload an object to cloud storage.
 final class ObjectUploadHadersParameters {
   const ObjectUploadHadersParameters({
     required this.bodyBytes,
@@ -94,12 +100,14 @@ final class ObjectUploadHadersParameters {
   Map<String, String> get getHeaders => {..._xAmzStorageClass, ..._contentMD5};
 }
 
+/// Configuration of the storage (storage method) into which the object will be loaded.
 enum ClassOfStorage {
   standard,
   cold,
   ice,
 }
 
+/// Contains a mandatory list of headers required to delete an object.
 final class DeleteObjectHeadersParameters {
   final bool useXAmzBypassGovernanceRetention;
 

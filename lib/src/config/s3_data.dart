@@ -50,7 +50,8 @@ abstract final class S3Data {
 
     final canonicalHeadersString = (canonicalHeaders..sort()).join('');
 
-    final keyList = signatureHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
+    final keyList = signatureHeaders.keys.map((e) => e.toLowerCase()).toList()
+      ..sort();
     final signedHeaderKeys = keyList.join(';');
 
     return '${requestType.value}\n'

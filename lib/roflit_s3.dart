@@ -1,4 +1,6 @@
-library s3roflit;
+/// Fletch RoflitS3 package.
+/// The class [RoflitS3] provide access to the REST AWS S3 Api features.
+library roflitS3;
 
 import 'src/constants.dart';
 import 'src/entity/access.dart';

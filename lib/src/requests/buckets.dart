@@ -3,7 +3,7 @@ import '../entity/access.dart';
 import '../entity/request.dart';
 import 'parameters/bucket_parameters.dart';
 
-/// A set of operations for working with cloud service buckets.
+/// Set of operations for working with cloud service buckets.
 final class BucketRequests {
   final RoflitAccess _access;
 
@@ -89,7 +89,8 @@ final class BucketRequests {
   RoflitRequest getObjects({
     required String bucketName,
     Map<String, String> headers = const {},
-    BucketListObjectParameters queryParameters = const BucketListObjectParameters.empty(),
+    BucketListObjectParameters queryParameters =
+        const BucketListObjectParameters.empty(),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.get;

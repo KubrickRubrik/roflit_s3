@@ -29,7 +29,8 @@ void main() async {
   );
 
   // Create bucket
-  final createBucketResponse = await operations.createBucket(storage, bucketName: bucketName);
+  final createBucketResponse =
+      await operations.createBucket(storage, bucketName: bucketName);
 
   if (!createBucketResponse.isSuccess) {
     log('Error: ${createBucketResponse.message}');
@@ -59,7 +60,8 @@ void main() async {
   }
 
   // Get objects
-  final getObjectsResponse = await operations.getObjects(storage, bucketName: bucketName);
+  final getObjectsResponse =
+      await operations.getObjects(storage, bucketName: bucketName);
 
   if (!getObjectsResponse.isSuccess) {
     log('Error: ${getObjectsResponse.message}');
@@ -80,7 +82,8 @@ void main() async {
   }
 
   // Delete bucket
-  final deleteBucketResponse = await operations.deleteBucket(storage, bucketName: bucketName);
+  final deleteBucketResponse =
+      await operations.deleteBucket(storage, bucketName: bucketName);
   if (!deleteBucketResponse.isSuccess) {
     log('Error: ${deleteBucketResponse.message}');
     return;
@@ -90,7 +93,8 @@ void main() async {
 final class Operations {
   final client = DioClient();
 
-  Future<Result> createBucket(RoflitS3 storage, {required String bucketName}) async {
+  Future<Result> createBucket(RoflitS3 storage,
+      {required String bucketName}) async {
     final dto = storage.buckets.create(
       bucketName: bucketName,
       headers: {'X-Amz-Acl': 'public-read'}, // or 'bucket-owner-full-control'
@@ -134,7 +138,8 @@ final class Operations {
     required String bucketName,
     required String objectName,
   }) async {
-    final dto = storage.objects.delete(bucketName: bucketName, objectKey: objectName);
+    final dto =
+        storage.objects.delete(bucketName: bucketName, objectKey: objectName);
     return client.send(dto);
   }
 

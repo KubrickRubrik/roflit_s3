@@ -1,15 +1,14 @@
 import 'dart:convert';
 
 import '../config/s3_config.dart';
-import '../entity/access.dart';
 import '../entity/request.dart';
 import 'parameters/object_parameters.dart';
 
 /// Set of operations for working with cloud service objects.
 final class ObjectRequests {
-  final RoflitAccess _access;
+  final S3Config _s3Config;
 
-  const ObjectRequests(RoflitAccess access) : _access = access;
+  const ObjectRequests(S3Config s3Config) : _s3Config = s3Config;
 
   /// The method returns the request data needed to retrieve an object named `objectKey`
   /// in a bucket named `bucketName`.
@@ -18,16 +17,20 @@ final class ObjectRequests {
     required String objectKey,
     Map<String, String> headers = const {},
     ObjectGetParameters queryParameters = const ObjectGetParameters.empty(),
+    Duration linkExpirationDate = const Duration(days: 30),
+    bool useSignedUri = false,
   }) {
-    final canonicalRequest = '/$bucketName/$objectKey';
+    final canonicalRequest = '/$objectKey';
     const requestType = RequestType.get;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
+      bucketName: bucketName,
       canonicalRequest: canonicalRequest,
       canonicalQuerystring: queryParameters.url,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
+      useSignedUri: useSignedUri,
     );
   }
 
@@ -37,16 +40,17 @@ final class ObjectRequests {
     required String bucketName,
     required String objectKey,
     Map<String, String> headers = const {},
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     final canonicalRequest = '/$objectKey';
     const requestType = RequestType.delete;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       requestType: requestType,
       bucketName: bucketName,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
     );
   }
 
@@ -57,17 +61,20 @@ final class ObjectRequests {
     required String objectKey,
     required List<int> body,
     required ObjectUploadHadersParameters headers,
+    Duration linkExpirationDate = const Duration(days: 30),
+    bool useSignedUri = false,
   }) {
     final canonicalRequest = '/$objectKey';
     const requestType = RequestType.put;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       requestType: requestType,
       headers: headers.getHeaders,
       bucketName: bucketName,
       requestBody: body,
+      linkExpirationDate: linkExpirationDate,
+      useSignedUri: useSignedUri,
     );
   }
 
@@ -85,20 +92,20 @@ final class ObjectRequests {
   RoflitRequest deleteMultiple({
     required String bucketName,
     required String body,
-    DeleteObjectHeadersParameters headers =
-        const DeleteObjectHeadersParameters(),
+    DeleteObjectHeadersParameters headers = const DeleteObjectHeadersParameters(),
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.post;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       canonicalQuerystring: 'delete=true',
       requestType: requestType,
       bucketName: bucketName,
       headers: headers.getHeaders(inputStringDoc: utf8.encode(body)),
       requestBody: utf8.encode(body),
+      linkExpirationDate: linkExpirationDate,
     );
   }
 }

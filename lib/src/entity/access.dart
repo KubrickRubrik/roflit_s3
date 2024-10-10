@@ -1,13 +1,13 @@
 final class RoflitAccess {
-  final String keyIdentifier;
-  final String secretKey;
+  final String accessKeyId;
+  final String secretAccessKey;
   final String host;
   final String region;
   final bool useLog;
 
   const RoflitAccess({
-    required this.keyIdentifier,
-    required this.secretKey,
+    required this.accessKeyId,
+    required this.secretAccessKey,
     required this.host,
     required this.region,
     required this.useLog,

@@ -1,29 +1,29 @@
 import '../config/s3_config.dart';
-import '../entity/access.dart';
 import '../entity/request.dart';
 import 'parameters/bucket_parameters.dart';
 
 /// Set of operations for working with cloud service buckets.
 final class BucketRequests {
-  final RoflitAccess _access;
+  final S3Config _s3Config;
 
-  BucketRequests(RoflitAccess access) : _access = access;
+  const BucketRequests(S3Config s3Config) : _s3Config = s3Config;
 
   /// The method returns the request data needed to get a list of available
   /// buckets for the service account in use.
   RoflitRequest get({
     Map<String, String> headers = const {},
     String queryParameters = '',
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.get;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       canonicalQuerystring: queryParameters,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
     );
   }
 
@@ -35,17 +35,18 @@ final class BucketRequests {
     required String bucketName,
     Map<String, String> headers = const {},
     String queryParameters = '',
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.get;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       bucketName: bucketName,
       canonicalQuerystring: queryParameters,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
     );
   }
 
@@ -53,16 +54,19 @@ final class BucketRequests {
   RoflitRequest create({
     required String bucketName,
     Map<String, String> headers = const {},
+    Duration linkExpirationDate = const Duration(days: 30),
+    bool useSignedUri = false,
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.put;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       bucketName: bucketName,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
+      useSignedUri: useSignedUri,
     );
   }
 
@@ -70,16 +74,17 @@ final class BucketRequests {
   RoflitRequest delete({
     required String bucketName,
     Map<String, String> headers = const {},
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.delete;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       bucketName: bucketName,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
     );
   }
 
@@ -89,19 +94,19 @@ final class BucketRequests {
   RoflitRequest getObjects({
     required String bucketName,
     Map<String, String> headers = const {},
-    BucketListObjectParameters queryParameters =
-        const BucketListObjectParameters.empty(),
+    BucketListObjectParameters queryParameters = const BucketListObjectParameters.empty(),
+    Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.get;
 
-    return S3Config.signing(
-      access: _access,
+    return _s3Config.preSigning(
       canonicalRequest: canonicalRequest,
       bucketName: bucketName,
       canonicalQuerystring: queryParameters.queryString,
       requestType: requestType,
       headers: headers,
+      linkExpirationDate: linkExpirationDate,
     );
   }
 }

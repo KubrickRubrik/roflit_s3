@@ -10,11 +10,11 @@ final class RoflitRequest {
   final Object? _body;
 
   RoflitRequest({
-    required Uri url,
+    required Uri uri,
     required Map<String, String> headers,
     required RequestType typeRequest,
     Object? body,
-  })  : _url = url,
+  })  : _url = uri,
         _headers = headers,
         _typeRequest = typeRequest,
         _body = body;

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 abstract final class S3Utility {
   static String hashSha256(List<int> value) {
@@ -20,9 +20,7 @@ abstract final class S3Utility {
     required String serviceName,
     required String stringToSign,
   }) {
-    final kDate = Hmac(sha256, utf8.encode('AWS4$secretKey'))
-        .convert(utf8.encode(dateStamp))
-        .bytes;
+    final kDate = Hmac(sha256, utf8.encode('AWS4$secretKey')).convert(utf8.encode(dateStamp)).bytes;
 
     final kRegion = sign(key: kDate, msg: regionName).bytes;
     final kService = sign(key: kRegion, msg: serviceName).bytes;

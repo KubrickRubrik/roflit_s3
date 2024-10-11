@@ -7,7 +7,7 @@ import '../../entity/s3config_dto.dart';
 import 's3_sign.dart';
 
 abstract final class S3ConfigDefaultTool {
-  static Map<String, String> getSignatureHeaders({
+  static Map<String, String> prepareHeaders({
     required S3ConfigDto s3ConfigDto,
     required RoflitAccess access,
     required Map<String, String> headers,

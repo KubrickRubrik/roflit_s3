@@ -17,27 +17,22 @@ abstract final class DefaultS3Uri {
     required String canonicalQuerystring,
     required List<int> requestBody,
   }) {
-    //! 1
     final validCanonicalUrl = S3Utility.getValidUrl(canonicalUrl);
 
-    //! 2
-    final defaultHeaders = S3ConfigDefaultTool.getSignatureHeaders(
+    final defaultHeaders = S3ConfigDefaultTool.prepareHeaders(
+      s3ConfigDto: s3ConfigDto,
       access: access,
       headers: headers,
-      s3ConfigDto: s3ConfigDto,
     );
 
-    //! 3
     final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
     final signedHeaderKeys = keyList.join(';');
 
-    //! 4
     final credentialScope = '${s3ConfigDto.dateYYYYmmDD}/'
         '${access.region}/'
         '${Constants.service}/'
         '${Constants.aws4Request}';
 
-    //! 5
     final canonicalRequest = S3ConfigDefaultTool.getCanonicalRequest(
       requestType: requestType,
       s3ConfigDto: s3ConfigDto,
@@ -47,7 +42,6 @@ abstract final class DefaultS3Uri {
       signedHeaderKeys: signedHeaderKeys,
     );
 
-    //! 6
     final signature = S3ConfigDefaultTool.getSignature(
       access: access,
       s3ConfigDto: s3ConfigDto,
@@ -57,7 +51,6 @@ abstract final class DefaultS3Uri {
       canonicalRequest: canonicalRequest,
     );
 
-    //! 7
     final signedHeaders = S3ConfigDefaultTool.getHeaders(
       s3ConfigDto: s3ConfigDto,
       access: access,
@@ -67,7 +60,6 @@ abstract final class DefaultS3Uri {
       signature: signature,
     );
 
-    //!
     final queryString = canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring' : '';
 
     final uri = Uri.parse(

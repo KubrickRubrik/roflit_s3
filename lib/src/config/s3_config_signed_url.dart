@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../constants.dart';
 import '../entity/access.dart';
 import '../entity/request.dart';
@@ -19,21 +21,17 @@ abstract final class SignedS3Url {
     required String defaultCanonicalQuerystring,
     required List<int> requestBody,
   }) {
-    //! 1
     final validCanonicalUrl = S3Utility.getValidUrl(canonicalUrl);
 
-    //! 2
-    final defaultHeaders = S3ConfigSignedTool.getSignatureHeaders(
+    final defaultHeaders = S3ConfigSignedTool.prepareHeaders(
+      s3ConfigDto: s3ConfigDto,
       access: access,
       headers: headers,
-      s3ConfigDto: s3ConfigDto,
     );
 
-    //! 3
     final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
-    final xAmzSignedHeaders = keyList.join(';');
+    final xAmzSignedHeaderKeys = keyList.join(';');
 
-    //! 4
     final credentialScope = Uri.encodeComponent(
       '${access.accessKeyId}/'
       '${s3ConfigDto.dateYYYYmmDD}/'
@@ -42,47 +40,40 @@ abstract final class SignedS3Url {
       '${Constants.aws4Request}',
     );
 
-    //! 4
     final canonicalQueryString = S3ConfigSignedTool.getCanonicalQueryString(
       s3ConfigDto: s3ConfigDto,
       canonicalQuerystring: defaultCanonicalQuerystring,
       credentialScope: credentialScope,
-      xAmzSignedHeaders: xAmzSignedHeaders,
+      xAmzSignedHeaderKeys: xAmzSignedHeaderKeys,
     );
 
-    //! 5
     final canonicalHeaders = S3ConfigSignedTool.getCanonicalHeaders(
       defaultHeaders: defaultHeaders,
     );
 
-    //! 6
-    final keyListHeaders = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
-    final signedHeaderKeys = keyListHeaders.join(';');
-
-    //! 7
     final canonicalRequest = S3ConfigSignedTool.getCanonicalRequest(
       requestType: requestType,
       validCanonicalUrl: validCanonicalUrl,
       newCanonicalQueryString: canonicalQueryString,
       canonicalHeaders: canonicalHeaders,
-      signedHeaderKeys: signedHeaderKeys,
+      signedHeaderKeys: xAmzSignedHeaderKeys,
     );
 
-    //! 8
+    debugPrint('>>>> $canonicalRequest');
+
     final signature = S3ConfigSignedTool.getSignature(
       access: access,
       s3ConfigDto: s3ConfigDto,
       canonicalRequest: canonicalRequest,
     );
 
-    //! 9
     final signedUrl = S3ConfigSignedTool.getRequest(
       access: access,
       canonicalUrl: canonicalUrl,
       canonicalQuerystring: defaultCanonicalQuerystring,
       credentialScope: credentialScope,
       s3ConfigDto: s3ConfigDto,
-      xAmzSignedHeaders: xAmzSignedHeaders,
+      xAmzSignedHeaders: xAmzSignedHeaderKeys,
       signature: signature,
     );
 

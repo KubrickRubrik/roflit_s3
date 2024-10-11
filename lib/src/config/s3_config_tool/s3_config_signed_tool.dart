@@ -8,29 +8,14 @@ import '../../entity/s3config_dto.dart';
 import 's3_sign.dart';
 
 abstract final class S3ConfigSignedTool {
-  static Map<String, String> getSignatureHeaders({
+  static Map<String, String> prepareHeaders({
     required RoflitAccess access,
     required Map<String, String> headers,
     required S3ConfigDto s3ConfigDto,
   }) {
     final defaultHeaders = {
       'host': '${s3ConfigDto.bucket}${access.host}',
-      // 'x-amz-date': s3ConfigDto.xAmzDateHeader,
     };
-
-    // if (s3ConfigDto.payloadHash.isNotEmpty) {
-    //   defaultHeaders.addAll({'x-amz-content-sha256': s3ConfigDto.payloadHash});
-    // }
-
-    // for (var key in headers.keys) {
-    //   final titleKey = key.toLowerCase();
-    //   final value = headers[key]!;
-    //   defaultHeaders.addAll({titleKey: value});
-    // }
-
-    // if (!defaultHeaders.containsKey('content-type')) {
-    //   defaultHeaders['content-type'] = 'application/x-amz-json-1.1';
-    // }
 
     return defaultHeaders;
   }
@@ -39,7 +24,7 @@ abstract final class S3ConfigSignedTool {
     required S3ConfigDto s3ConfigDto,
     required String canonicalQuerystring,
     required String credentialScope,
-    required String xAmzSignedHeaders,
+    required String xAmzSignedHeaderKeys,
   }) {
     final defaultQuery = canonicalQuerystring.isNotEmpty ? '$canonicalQuerystring&' : '';
 
@@ -48,7 +33,7 @@ abstract final class S3ConfigSignedTool {
       'X-Amz-Credential': credentialScope,
       'X-Amz-Date': s3ConfigDto.xAmzDateHeader,
       'X-Amz-Expires': s3ConfigDto.xAmzDateExpires.inSeconds.toString(),
-      'X-Amz-SignedHeaders': xAmzSignedHeaders,
+      'X-Amz-SignedHeaders': xAmzSignedHeaderKeys,
     };
 
     final rawCanonicalRequest = signedMap.entries.map((v) => '${v.key}=${v.value}').join('&');
@@ -61,6 +46,7 @@ abstract final class S3ConfigSignedTool {
   }) {
     final canonicalHeaders = <String>[];
     defaultHeaders.forEach((key, value) {
+      key = key.toLowerCase();
       canonicalHeaders.add('$key:$value\n');
     });
     return (canonicalHeaders..sort()).join('');
@@ -120,7 +106,7 @@ abstract final class S3ConfigSignedTool {
         '&X-Amz-Credential=$credentialScope'
         '&X-Amz-Date=${s3ConfigDto.xAmzDateHeader}'
         '&X-Amz-Expires=${s3ConfigDto.xAmzDateExpires.inSeconds.toString()}'
-        '&X-Amz-SignedHeaders=${Uri.encodeComponent(xAmzSignedHeaders)}'
+        '&X-Amz-SignedHeaders=$xAmzSignedHeaders'
         '&X-Amz-Signature=$signature';
   }
 }

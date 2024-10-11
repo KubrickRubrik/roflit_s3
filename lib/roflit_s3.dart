@@ -23,27 +23,23 @@ final class RoflitS3 {
     required String secretAccessKey,
     required String host,
     required String region,
-    bool useLog = false,
   }) : _access = RoflitAccess(
           accessKeyId: accessKeyId,
           secretAccessKey: secretAccessKey,
           host: host,
           region: region,
-          useLog: useLog,
         );
 
   /// Configuration for Yandex Cloud service compatible with REST AWS S3.
   RoflitS3.yandex({
-    required String keyIdentifier,
-    required String secretKey,
+    required String accessKeyId,
+    required String secretAccessKey,
     String region = Constants.region,
-    bool useLog = false,
   }) : _access = RoflitAccess(
-          accessKeyId: keyIdentifier,
-          secretAccessKey: secretKey,
+          accessKeyId: accessKeyId,
+          secretAccessKey: secretAccessKey,
           host: Constants.host,
           region: region,
-          useLog: useLog,
         );
 
   /// The cloud service host used.

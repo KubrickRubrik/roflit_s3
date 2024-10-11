@@ -7,10 +7,10 @@ import '../../entity/s3config_dto.dart';
 import 's3_sign.dart';
 
 abstract final class S3ConfigDefaultTool {
-  static S3ConfigDto getSignatureHheaders({
+  static Map<String, String> getSignatureHeaders({
+    required S3ConfigDto s3ConfigDto,
     required RoflitAccess access,
     required Map<String, String> headers,
-    required S3ConfigDto s3ConfigDto,
   }) {
     final defaultHeaders = {
       'host': '${s3ConfigDto.bucket}${access.host}',
@@ -31,80 +31,72 @@ abstract final class S3ConfigDefaultTool {
       defaultHeaders['content-type'] = 'application/x-amz-json-1.1';
     }
 
-    return s3ConfigDto.setDefaultHeader(defaultHeaders);
+    return defaultHeaders;
   }
 
   // Definition of a canonical default request.
-  static S3ConfigDto getCanonicalRequest({
-    required RequestType requestType,
+  static String getCanonicalRequest({
     required S3ConfigDto s3ConfigDto,
+    required RequestType requestType,
     required String canonicalRequest,
     required String canonicalQuerystring,
+    required Map<String, String> defaultHeaders,
+    required String signedHeaderKeys,
   }) {
     final canonicalHeaders = <String>[];
-    s3ConfigDto.defaultHeaders.forEach((key, value) {
+    defaultHeaders.forEach((key, value) {
       canonicalHeaders.add('$key:$value\n');
     });
 
     final canonicalHeadersString = (canonicalHeaders..sort()).join('');
 
-    final keyList = s3ConfigDto.defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
-    final signedHeaderKeys = keyList.join(';');
-
-    final newCanonicalRequest = '${requestType.value}\n'
+    return '${requestType.value}\n'
         '$canonicalRequest\n'
         '$canonicalQuerystring\n'
         '$canonicalHeadersString\n'
         '$signedHeaderKeys\n'
         '${s3ConfigDto.payloadHash}';
-
-    return s3ConfigDto.setCanonicalRequest(newCanonicalRequest);
   }
 
-  static S3ConfigDto getSignature({
-    required RoflitAccess access,
+  static String getSignature({
     required S3ConfigDto s3ConfigDto,
+    required RoflitAccess access,
+    required Map<String, String> defaultHeaders,
+    required String signedHeaderKeys,
+    required String credentialScope,
+    required String canonicalRequest,
   }) {
-    const algorithm = 'AWS4-HMAC-SHA256';
-    final credentialScope =
-        '${s3ConfigDto.dateYYYYmmDD}/${access.region}/${Constants.service}/${Constants.aws4Request}';
+    final stringToSign = 'AWS4-HMAC-SHA256\n'
+        '${s3ConfigDto.xAmzDateHeader}\n'
+        '$credentialScope\n'
+        '${S3Utility.hashSha256(utf8.encode(canonicalRequest))}';
 
-    final stringToSign = '$algorithm\n${s3ConfigDto.xAmzDateHeader}\n$credentialScope\n'
-        '${S3Utility.hashSha256(utf8.encode(s3ConfigDto.canonicalRequest))}';
-
-    final signature = S3Utility.getSignature(
+    return S3Utility.signSignature(
       secretKey: access.secretAccessKey,
       dateStamp: s3ConfigDto.dateYYYYmmDD,
       regionName: Constants.region,
       serviceName: Constants.service,
       stringToSign: stringToSign,
     );
-
-    final keyList = s3ConfigDto.defaultHeaders.keys.toList()..sort();
-    final headers = keyList.join(';');
-
-    return s3ConfigDto.setSignature(
-      S3ConfigSignatureDto(
-        algorithm: algorithm,
-        credential: '${access.accessKeyId}/$credentialScope',
-        signedHeaders: headers,
-        signature: signature,
-      ),
-    );
   }
 
   static Map<String, String> getHeaders({
     required S3ConfigDto s3ConfigDto,
+    required RoflitAccess access,
+    required Map<String, String> defaultHeaders,
+    required String signedHeaderKeys,
+    required String credentialScope,
+    required String signature,
   }) {
-    final authorization = '${s3ConfigDto.signature.algorithm} '
-        'Credential=${s3ConfigDto.signature.credential}, '
-        'SignedHeaders=${s3ConfigDto.signature.signedHeaders}, '
-        'Signature=${s3ConfigDto.signature.signature}';
+    final authorization = 'AWS4-HMAC-SHA256 '
+        'Credential=${access.accessKeyId}/$credentialScope, '
+        'SignedHeaders=$signedHeaderKeys, '
+        'Signature=$signature';
 
     return {
       'Accept': '*/*',
       'Authorization': authorization,
-      ...s3ConfigDto.defaultHeaders,
+      ...defaultHeaders,
     };
   }
 }

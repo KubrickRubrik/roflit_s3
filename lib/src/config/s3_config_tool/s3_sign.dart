@@ -5,6 +5,10 @@ import 'package:crypto/crypto.dart';
 import '../../constants.dart';
 
 abstract final class S3Utility {
+  static String getValidUrl(String rawUrl) {
+    return rawUrl.split('/').map((v) => Uri.encodeComponent(v)).join('/');
+  }
+
   static String hashSha256(List<int> value) {
     return sha256.convert(value).toString();
   }
@@ -13,7 +17,7 @@ abstract final class S3Utility {
     return Hmac(sha256, key).convert(utf8.encode(msg));
   }
 
-  static String getSignature({
+  static String signSignature({
     required String secretKey,
     required String dateStamp,
     required String regionName,

@@ -38,7 +38,7 @@ final class S3Config {
           canonicalUrl: canonicalRequest,
           requestType: requestType,
           headers: headers,
-          canonicalQuerystring: canonicalQuerystring,
+          defaultCanonicalQuerystring: canonicalQuerystring,
           requestBody: requestBody,
         );
       case false:

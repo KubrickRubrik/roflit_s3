@@ -55,7 +55,7 @@ final class BucketRequests {
     required String bucketName,
     Map<String, String> headers = const {},
     Duration linkExpirationDate = const Duration(days: 30),
-    bool useSignedUri = false,
+    bool useSignedUrl = false,
   }) {
     const canonicalRequest = '/';
     const requestType = RequestType.put;
@@ -66,7 +66,7 @@ final class BucketRequests {
       requestType: requestType,
       headers: headers,
       linkExpirationDate: linkExpirationDate,
-      useSignedUri: useSignedUri,
+      useSignedUrl: useSignedUrl,
     );
   }
 
@@ -94,7 +94,8 @@ final class BucketRequests {
   RoflitRequest getObjects({
     required String bucketName,
     Map<String, String> headers = const {},
-    BucketListObjectParameters queryParameters = const BucketListObjectParameters.empty(),
+    BucketListObjectParameters queryParameters =
+        const BucketListObjectParameters.empty(),
     Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';

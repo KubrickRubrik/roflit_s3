@@ -23,8 +23,6 @@ To use Roflit S3, you need to complete three steps:
 2.  Form the request data for the operation on buckets or objects.
 3.  Pass the request data to your request client.
 
-## Let's look at an example:
-
 Step 1
 
 ```dart
@@ -38,19 +36,19 @@ final storage = RoflitS3(
        );
 // If this is your first time using the cloud service, you will
 // most likely also need:
-// 1. Create a service account;
-// 2. Assign roles to it;
+// 1. Create an account on your cloud storage;
+// 2. Assign roles to it (access rights);
 // 3. Create a secret static key for it and save its
-//    details (keyIdentifier and secretKey).
+//    details (accessKeyId and secretAccessKey).
 ```
 
 Step 2
 
 ```dart
-   // Generate request data for all buckets from cloud.
+   // Generate query data to select data from the cloud.
    final requestBucketsData = storage.buckets.get();
    // Removing a bucket from cloud.
-     final bucketDeleteRequestData = storage.buckets.delete(
+   final requestBucketObjectsData = storage.buckets.getObjects(
       bucketName: 'bucketName',
     );
 ```
@@ -75,6 +73,40 @@ Step 3
 ```
 
 To read bucket and object data, you will need to parse XML or convert XML to Json. More details in the example.
+
+## Read/Download object:
+
+There are two ways to read/download an object from a private storage:
+
+1. Signed request.
+
+```dart
+ // Generate signed request data.
+ final object = storage.objects.get(
+      bucketName: 'bucketName',
+      objectKey: 'objectKey',
+    );
+ // Use url and headers in your widgets.
+ Image.network(
+    object.url.toString(),
+    headers: object.headers,
+ )
+```
+
+2. Signed link.
+
+```dart
+ // Generate signed link data.
+ final object = storage.objects.get(
+      bucketName: 'bucketName',
+      objectKey: 'objectKey',
+      useSignedUrl: true,
+    );
+ // Use only url.
+ Image.network(
+    object.url.toString(),
+ )
+```
 
 ## Contributions
 

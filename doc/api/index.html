@@ -62,7 +62,6 @@
 <li>Form the request data for the operation on buckets or objects.</li>
 <li>Pass the request data to your request client.</li>
 </ol>
-<h2 id="lets-look-at-an-example">Let's look at an example:</h2>
 <p>Step 1</p>
 <pre class="language-dart"><code class="language-dart">// How to get storageAccount parameters can be found in the documentation
 // of the cloud service you are using and the service management console.
@@ -74,16 +73,16 @@ final storage = RoflitS3(
        );
 // If this is your first time using the cloud service, you will
 // most likely also need:
-// 1. Create a service account;
-// 2. Assign roles to it;
+// 1. Create an account on your cloud storage;
+// 2. Assign roles to it (access rights);
 // 3. Create a secret static key for it and save its
-//    details (keyIdentifier and secretKey).
+//    details (accessKeyId and secretAccessKey).
 </code></pre>
 <p>Step 2</p>
-<pre class="language-dart"><code class="language-dart">   // Generate request data for all buckets from cloud.
+<pre class="language-dart"><code class="language-dart">   // Generate query data to select data from the cloud.
    final requestBucketsData = storage.buckets.get();
    // Removing a bucket from cloud.
-     final bucketDeleteRequestData = storage.buckets.delete(
+   final requestBucketObjectsData = storage.buckets.getObjects(
       bucketName: 'bucketName',
     );
 </code></pre>
@@ -104,6 +103,36 @@ final storage = RoflitS3(
    }
 </code></pre>
 <p>To read bucket and object data, you will need to parse XML or convert XML to Json. More details in the example.</p>
+<h2 id="readdownload-object">Read/Download object:</h2>
+<p>There are two ways to read/download an object from a private storage:</p>
+<ol>
+<li>Signed request.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart"> // Generate signed request data.
+ final object = storage.objects.get(
+      bucketName: 'bucketName',
+      objectKey: 'objectKey',
+    );
+ // Use url and headers in your widgets.
+ Image.network(
+    object.url.toString(),
+    headers: object.headers,
+ )
+</code></pre>
+<ol start="2">
+<li>Signed link.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart"> // Generate signed link data.
+ final object = storage.objects.get(
+      bucketName: 'bucketName',
+      objectKey: 'objectKey',
+      useSignedUrl: true,
+    );
+ // Use only url.
+ Image.network(
+    object.url.toString(),
+ )
+</code></pre>
 <h2 id="contributions">Contributions</h2>
 <p>If you encounter any problem or the library is missing a feature feel free to open an issue. Feel
 free to fork, improve the package and make pull request.</p>
@@ -113,12 +142,11 @@ free to fork, improve the package and make pull request.</p>
       <section class="summary">
           <h2>Libraries</h2>
         <dl>
-          <dt id="roflitS3">
-  <span class="name"><a href="roflitS3/roflitS3-library.html">roflit_s3</a></span> 
+          <dt id="roflit_s3">
+  <span class="name"><a href="roflit_s3/roflit_s3-library.html">roflit_s3</a></span> 
 
 </dt>
-<dd>Fletch RoflitS3 package.
-The class <a href="roflitS3/RoflitS3-class.html">RoflitS3</a> provide access to the REST AWS S3 Api features.
+<dd>
 </dd>
 
         </dl>
@@ -138,7 +166,7 @@ The class <a href="roflitS3/RoflitS3-class.html">RoflitS3</a> provide access to 
     <h5 class="hidden-xs"><span class="package-name">roflit_s3</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="roflitS3/roflitS3-library.html">roflit_s3</a></li>
+      <li><a href="roflit_s3/roflit_s3-library.html">roflit_s3</a></li>
 </ol>
 
   </div>

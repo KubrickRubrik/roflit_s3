@@ -26,7 +26,8 @@ abstract final class S3ConfigSignedTool {
     required String credentialScope,
     required String xAmzSignedHeaderKeys,
   }) {
-    final defaultQuery = canonicalQuerystring.isNotEmpty ? '$canonicalQuerystring&' : '';
+    final defaultQuery =
+        canonicalQuerystring.isNotEmpty ? '$canonicalQuerystring&' : '';
 
     final signedMap = {
       'X-Amz-Algorithm': 'AWS4-HMAC-SHA256',
@@ -36,7 +37,8 @@ abstract final class S3ConfigSignedTool {
       'X-Amz-SignedHeaders': xAmzSignedHeaderKeys,
     };
 
-    final rawCanonicalRequest = signedMap.entries.map((v) => '${v.key}=${v.value}').join('&');
+    final rawCanonicalRequest =
+        signedMap.entries.map((v) => '${v.key}=${v.value}').join('&');
 
     return '$defaultQuery$rawCanonicalRequest';
   }
@@ -100,7 +102,8 @@ abstract final class S3ConfigSignedTool {
     required String xAmzSignedHeaders,
     required String signature,
   }) {
-    final queryString = canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring&' : '?';
+    final queryString =
+        canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring&' : '?';
     return 'https://${s3ConfigDto.bucket}${access.host}$canonicalUrl$queryString'
         'X-Amz-Algorithm=AWS4-HMAC-SHA256'
         '&X-Amz-Credential=$credentialScope'

@@ -1,7 +1,3 @@
-/// Fletch RoflitS3 package.
-/// The class [RoflitS3] provide access to the REST AWS S3 Api features.
-library roflitS3;
-
 import 'src/config/s3_config.dart';
 import 'src/constants.dart';
 import 'src/entity/access.dart';
@@ -23,11 +19,13 @@ final class RoflitS3 {
     required String secretAccessKey,
     required String host,
     required String region,
+    bool useLog = false,
   }) : _access = RoflitAccess(
           accessKeyId: accessKeyId,
           secretAccessKey: secretAccessKey,
           host: host,
           region: region,
+          uselog: useLog,
         );
 
   /// Configuration for Yandex Cloud service compatible with REST AWS S3.
@@ -35,11 +33,13 @@ final class RoflitS3 {
     required String accessKeyId,
     required String secretAccessKey,
     String region = Constants.region,
+    bool useLog = false,
   }) : _access = RoflitAccess(
           accessKeyId: accessKeyId,
           secretAccessKey: secretAccessKey,
           host: Constants.host,
           region: region,
+          uselog: useLog,
         );
 
   /// The cloud service host used.

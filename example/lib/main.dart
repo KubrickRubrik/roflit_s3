@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:roflit_s3/roflit_s3.dart';
 import 'package:roflit_s3_example/entity/object.dart';
 import 'package:roflit_s3_example/entity/result.dart';
@@ -29,10 +30,13 @@ void main() async {
   );
 
   // Create bucket
-  final createBucketResponse = await operations.createBucket(storage, bucketName: bucketName);
+  final createBucketResponse = await operations.createBucket(
+    storage,
+    bucketName: bucketName,
+  );
 
   if (!createBucketResponse.isSuccess) {
-    log('Error: ${createBucketResponse.message}');
+    debugPrint('Error: ${createBucketResponse.message}');
     return;
   }
 
@@ -40,11 +44,11 @@ void main() async {
   final getBucketsResponse = await operations.getBuckets(storage);
 
   if (!getBucketsResponse.isSuccess) {
-    log('Error: ${getBucketsResponse.message}');
+    debugPrint('Error: ${getBucketsResponse.message}');
     return;
   }
   final buckets = serializer.buckets(getBucketsResponse.success);
-  log('Buckets $buckets');
+  debugPrint('Buckets $buckets');
 
   // Uploading a file (object) to a bucket.
   final uploadObjectResponse = await operations.uploadObject(
@@ -54,19 +58,22 @@ void main() async {
   );
 
   if (!uploadObjectResponse.isSuccess) {
-    log('Error: ${uploadObjectResponse.message}');
+    debugPrint('Error: ${uploadObjectResponse.message}');
     return;
   }
 
   // Get objects
-  final getObjectsResponse = await operations.getObjects(storage, bucketName: bucketName);
+  final getObjectsResponse = await operations.getObjects(
+    storage,
+    bucketName: bucketName,
+  );
 
   if (!getObjectsResponse.isSuccess) {
-    log('Error: ${getObjectsResponse.message}');
+    debugPrint('Error: ${getObjectsResponse.message}');
     return;
   }
   final objects = serializer.objects(getObjectsResponse.success);
-  log('Objects $objects');
+  debugPrint('Objects $objects');
 
   // Delete object
   final deleteObjectsResponse = await operations.deleteObject(
@@ -75,14 +82,15 @@ void main() async {
     objectName: bucketName,
   );
   if (!deleteObjectsResponse.isSuccess) {
-    log('Error: ${deleteObjectsResponse.message}');
+    debugPrint('Error: ${deleteObjectsResponse.message}');
     return;
   }
 
   // Delete bucket
-  final deleteBucketResponse = await operations.deleteBucket(storage, bucketName: bucketName);
+  final deleteBucketResponse =
+      await operations.deleteBucket(storage, bucketName: bucketName);
   if (!deleteBucketResponse.isSuccess) {
-    log('Error: ${deleteBucketResponse.message}');
+    debugPrint('Error: ${deleteBucketResponse.message}');
     return;
   }
 }
@@ -90,7 +98,8 @@ void main() async {
 final class Operations {
   final client = DioClient();
 
-  Future<Result> createBucket(RoflitS3 storage, {required String bucketName}) async {
+  Future<Result> createBucket(RoflitS3 storage,
+      {required String bucketName}) async {
     final dto = storage.buckets.create(
       bucketName: bucketName,
       headers: {'X-Amz-Acl': 'public-read'}, // or 'bucket-owner-full-control'
@@ -134,7 +143,8 @@ final class Operations {
     required String bucketName,
     required String objectName,
   }) async {
-    final dto = storage.objects.delete(bucketName: bucketName, objectKey: objectName);
+    final dto =
+        storage.objects.delete(bucketName: bucketName, objectKey: objectName);
     return client.send(dto);
   }
 

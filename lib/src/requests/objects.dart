@@ -18,7 +18,7 @@ final class ObjectRequests {
     Map<String, String> headers = const {},
     ObjectGetParameters queryParameters = const ObjectGetParameters.empty(),
     Duration linkExpirationDate = const Duration(days: 30),
-    bool useSignedUri = false,
+    bool useSignedUrl = false,
   }) {
     final canonicalRequest = '/$objectKey';
     const requestType = RequestType.get;
@@ -30,7 +30,7 @@ final class ObjectRequests {
       requestType: requestType,
       headers: headers,
       linkExpirationDate: linkExpirationDate,
-      useSignedUri: useSignedUri,
+      useSignedUrl: useSignedUrl,
     );
   }
 
@@ -62,7 +62,6 @@ final class ObjectRequests {
     required List<int> body,
     required ObjectUploadHadersParameters headers,
     Duration linkExpirationDate = const Duration(days: 30),
-    bool useSignedUri = false,
   }) {
     final canonicalRequest = '/$objectKey';
     const requestType = RequestType.put;
@@ -74,7 +73,6 @@ final class ObjectRequests {
       bucketName: bucketName,
       requestBody: body,
       linkExpirationDate: linkExpirationDate,
-      useSignedUri: useSignedUri,
     );
   }
 
@@ -92,7 +90,8 @@ final class ObjectRequests {
   RoflitRequest deleteMultiple({
     required String bucketName,
     required String body,
-    DeleteObjectHeadersParameters headers = const DeleteObjectHeadersParameters(),
+    DeleteObjectHeadersParameters headers =
+        const DeleteObjectHeadersParameters(),
     Duration linkExpirationDate = const Duration(days: 30),
   }) {
     const canonicalRequest = '/';

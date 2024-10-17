@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
 
 import '../constants.dart';
 import '../entity/access.dart';
@@ -25,7 +25,7 @@ abstract final class SignedS3Url {
     final validCanonicalUrl = S3Utility.getValidUrl(canonicalUrl);
 
     if (access.uselog) {
-      debugPrint('Roflit: Canonical Url: $validCanonicalUrl\n');
+      log('Roflit: Canonical Url: $validCanonicalUrl\n');
     }
 
     final defaultHeaders = S3ConfigSignedTool.prepareHeaders(
@@ -36,7 +36,7 @@ abstract final class SignedS3Url {
 
     if (access.uselog) {
       Utility.label(s3ConfigDto, canonicalUrl);
-      debugPrint(
+      log(
         'Roflit: Default Headers: ${defaultHeaders.entries.toString()}\n',
       );
     }
@@ -54,7 +54,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Credential Scope: $credentialScope');
+      log('Roflit: Credential Scope: $credentialScope');
     }
 
     final canonicalQueryString = S3ConfigSignedTool.getCanonicalQueryString(
@@ -65,7 +65,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Canonical Query String: $canonicalQueryString');
+      log('Roflit: Canonical Query String: $canonicalQueryString');
     }
 
     final canonicalHeaders = S3ConfigSignedTool.getCanonicalHeaders(
@@ -73,7 +73,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Canonical Headers: $canonicalHeaders');
+      log('Roflit: Canonical Headers: $canonicalHeaders');
     }
 
     final canonicalRequest = S3ConfigSignedTool.getCanonicalRequest(
@@ -85,7 +85,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Canonical Request $canonicalRequest');
+      log('Roflit: Canonical Request $canonicalRequest');
     }
 
     final signature = S3ConfigSignedTool.getSignature(
@@ -95,7 +95,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Signature $signature');
+      log('Roflit: Signature $signature');
     }
 
     final signedUrl = S3ConfigSignedTool.getRequest(
@@ -109,7 +109,7 @@ abstract final class SignedS3Url {
     );
 
     if (access.uselog) {
-      debugPrint('Roflit: Signed Url $signedUrl');
+      log('Roflit: Signed Url $signedUrl');
     }
 
     return RoflitRequest(

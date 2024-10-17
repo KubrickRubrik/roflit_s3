@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
 
 import '../entity/s3config_dto.dart';
 import './extension.dart';
@@ -11,7 +11,7 @@ abstract final class Utility {
     final bucketName = s3ConfigDto.bucket.split('.').first;
     final wrap =
         List.generate('$bucketName$canonicalUrl'.length, (i) => '=').join();
-    debugPrint(
+    log(
       '=======================$wrap=======================\n'
       '====================== $bucketName$canonicalUrl ======================\n'
       '=======================$wrap=======================\n',

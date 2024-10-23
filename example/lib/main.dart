@@ -237,7 +237,16 @@ final class Serializer {
       _parser.parse(value as String);
       final json = jsonDecode(_parser.toParker());
       final document = json['ListAllMyBucketsResult'];
-      final buckets = document['Buckets']['Bucket'] as List?;
+      final buckets = document['Buckets']['Bucket'];
+
+      if (buckets is Map) {
+        return [
+          BucketEntity(
+            bucket: buckets['Name'],
+            creationDate: buckets['CreationDate'],
+          )
+        ];
+      }
 
       final newBuckets = List.generate(buckets?.length ?? 0, (index) {
         final bucket = buckets![index];
@@ -260,16 +269,31 @@ final class Serializer {
       final document = json['ListBucketResult'];
 
       final bucket = document['Name'];
-      final objects = document['Contents'] as List?;
+      final objects = document['Contents'];
+
+      if (objects is Map) {
+        return [
+          ObjectEntity(
+            objectKey: objects['Key'],
+            bucket: bucket,
+            type: FormatConverter.converter(objects['Key']),
+            nesting: FormatConverter.nesting(objects['Key']),
+            remotePath: '$host/$bucket/${objects['Key']}',
+            size: int.tryParse(objects['Size']) ?? 0,
+            lastModified: objects['LastModified'],
+          )
+        ];
+      }
 
       final newObjects = List.generate(objects?.length ?? 0, (index) {
         final object = objects![index];
+
         return ObjectEntity(
           objectKey: object['Key'],
           bucket: bucket,
           type: FormatConverter.converter(object['Key']),
           nesting: FormatConverter.nesting(object['Key']),
-          remotePath: '$host/$bucket/${object['Key']}',
+          remotePath: '$host}/$bucket/${object['Key']}',
           size: int.tryParse(object['Size']) ?? 0,
           lastModified: object['LastModified'],
         );

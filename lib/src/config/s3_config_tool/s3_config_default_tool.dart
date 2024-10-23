@@ -74,7 +74,7 @@ abstract final class S3ConfigDefaultTool {
     return S3Utility.signSignature(
       secretKey: access.secretAccessKey,
       dateStamp: s3ConfigDto.dateYYYYmmDD,
-      regionName: Constants.region,
+      regionName: access.region,
       serviceName: Constants.service,
       stringToSign: stringToSign,
     );

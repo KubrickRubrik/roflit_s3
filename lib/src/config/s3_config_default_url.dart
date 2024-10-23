@@ -39,8 +39,7 @@ abstract final class DefaultS3Url {
       );
     }
 
-    final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()
-      ..sort();
+    final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
     final signedHeaderKeys = keyList.join(';');
 
     final credentialScope = '${s3ConfigDto.dateYYYYmmDD}/'
@@ -91,8 +90,7 @@ abstract final class DefaultS3Url {
       debugPrint('Roflit: Signed Headers $signedHeaders\n');
     }
 
-    final queryString =
-        canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring' : '';
+    final queryString = canonicalQuerystring.isNotEmpty ? '?$canonicalQuerystring' : '';
 
     final uri = Uri.parse(
       'https://${s3ConfigDto.bucket}${access.host}$validCanonicalUrl$queryString',
@@ -106,7 +104,7 @@ abstract final class DefaultS3Url {
       uri: uri,
       headers: signedHeaders,
       typeRequest: requestType,
-      body: requestBody,
+      body: requestBody.isEmpty ? null : requestBody,
     );
   }
 }

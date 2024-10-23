@@ -41,8 +41,7 @@ abstract final class SignedS3Url {
       );
     }
 
-    final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()
-      ..sort();
+    final keyList = defaultHeaders.keys.map((e) => e.toLowerCase()).toList()..sort();
     final xAmzSignedHeaderKeys = keyList.join(';');
 
     final credentialScope = Uri.encodeComponent(

@@ -32,12 +32,26 @@ final class RoflitS3 {
   RoflitS3.yandex({
     required String accessKeyId,
     required String secretAccessKey,
-    String region = Constants.region,
+    String region = Constants.yxRegion,
     bool useLog = false,
   }) : _access = RoflitAccess(
           accessKeyId: accessKeyId,
           secretAccessKey: secretAccessKey,
-          host: Constants.host,
+          host: Constants.yxHost,
+          region: region,
+          uselog: useLog,
+        );
+
+  /// Configuration for VK Cloud service compatible with REST AWS S3.
+  RoflitS3.vk({
+    required String accessKeyId,
+    required String secretAccessKey,
+    String region = Constants.vkMoscouRegion,
+    bool useLog = false,
+  }) : _access = RoflitAccess(
+          accessKeyId: accessKeyId,
+          secretAccessKey: secretAccessKey,
+          host: Constants.vkMoscouHost,
           region: region,
           uselog: useLog,
         );

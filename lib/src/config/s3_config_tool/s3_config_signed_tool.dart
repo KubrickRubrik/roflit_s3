@@ -85,7 +85,7 @@ abstract final class S3ConfigSignedTool {
     final signature = S3Utility.signSignature(
       secretKey: access.secretAccessKey,
       dateStamp: s3ConfigDto.dateYYYYmmDD,
-      regionName: Constants.region,
+      regionName: access.region,
       serviceName: Constants.service,
       stringToSign: stringToSign,
     );

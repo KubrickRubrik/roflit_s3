@@ -29,8 +29,8 @@ Step 1
 // How to get storageAccount parameters can be found in the documentation
 // of the cloud service you are using and the service management console.
 final storage = RoflitS3(
-          keyIdentifier: cloudStorageServiceAccount.keyIdentifier,
-          secretKey: cloudStorageServiceAccount.secretKey,
+          accessKeyId: cloudStorageServiceAccount.keyIdentifier,
+          secretAccessKey: cloudStorageServiceAccount.secretKey,
           host: cloudStorage.host,
           region: cloudStorage.region,
        );

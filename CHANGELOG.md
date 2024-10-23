@@ -1,7 +1,11 @@
 ## 0.0.1
 
-- TODO: Initial release.
+- Initial release.
 
 ## 0.0.2
 
-- TODO: Added config for Yandex and VK cloud service.
+- Added config for Yandex and VK cloud service.
+
+## 0.0.3
+
+- Documentation fixes.
